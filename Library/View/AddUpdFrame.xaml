@@ -1,0 +1,29 @@
+﻿<Page x:Class="Library.View.AddUpdFrame"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Library.View"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="1600"
+      Title="AddUpdFrame">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border CornerRadius="50" Margin="10" Background="#D95386" Grid.Column="1">
+            <StackPanel Margin="15" VerticalAlignment="Center">
+                <TextBox Text="{Binding Title, Mode=TwoWay}" materialDesign:HintAssist.Hint="Название" FontSize="50" Margin="10"/>
+                <TextBox Text="{Binding Author, Mode=TwoWay}" materialDesign:HintAssist.Hint="Автор" FontSize="50" Margin="10"/>
+                <TextBox Text="{Binding YearOfPublication, Mode=TwoWay}" materialDesign:HintAssist.Hint="Год выпуска" FontSize="50" Margin="10"/>
+                <TextBox Text="{Binding Genre, Mode=TwoWay}" materialDesign:HintAssist.Hint="Жанр" FontSize="50" Margin="10"/>
+                <TextBox Text="{Binding NumberOfPages, Mode=TwoWay}" materialDesign:HintAssist.Hint="Количество страниц" FontSize="50" Margin="10"/>
+                <Button Content="Сохранить" Command="{Binding AddCommand}" materialDesign:ButtonAssist.CornerRadius="25" Height="50" FontSize="20" Margin="350 30"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>
