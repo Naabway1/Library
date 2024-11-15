@@ -1,16 +1,9 @@
 ﻿using Library.Model;
 using Library.View;
 using MVVM;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -18,13 +11,24 @@ namespace Library.ViewModel
 {
     internal class MainViewModel : INotifyPropertyChanged
     {
-        private Book _selectedBook;
+        private Frame _myFrame;
+        public Frame MyFrame
+        {
+            get => _myFrame;
+            set
+            {
+                _myFrame = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand NavCommand { get; }
         public ICommand RemoveCommand { get; }
         public ICommand AddCommand { get; }
-        public ICommand UpdateCommand { get; }
-        public Action NavigateToAddBookPage { get; set; }
-        public Action NavigateToMainBookPage { get; set; }
+        public ICommand NavigateToAddBookPage { get; set; }
+        public ICommand NavigateToMainBookPage { get; set; }
+
+        private Book _selectedBook;
         private string _title;
         private string _author;
         private string _genre;
@@ -60,20 +64,16 @@ namespace Library.ViewModel
             get => _yearOfPublication;
             set { _yearOfPublication = value; OnPropertyChanged(); }
         }
+        public MainFrame mainPage = new MainFrame();
 
         public ObservableCollection<Book> Books { get; set; }
         public MainViewModel()
         {
-            NavigateToMainBookPage?.Invoke();
-            Books = new ObservableCollection<Book>
-            {
-                new Book() {Title = "Pizdec", Author = "Ahuet' Vladimirovi4", Genre = "Famtosia", NumberOfPages = 256, YearOfPublication = 2024}
-            };
-
-            NavCommand = new RelayCommand(param => Nav());
+            Books = new ObservableCollection<Book>();
+            NavigateToMainBookPage = new RelayCommand(param => MyFrame.Navigate(mainPage));
+            NavCommand = new RelayCommand(param => MyFrame.Navigate(new AddUpdFrame { DataContext = this } ));
             AddCommand = new RelayCommand(param => AddBook());
             RemoveCommand = new RelayCommand(param => RemoveBook(), param => SelectedBook != null);
-            UpdateCommand = new RelayCommand(param => UpdateBook(), param => param is Book);
         }
         public Book SelectedBook
         {
@@ -84,28 +84,43 @@ namespace Library.ViewModel
                 OnPropertyChanged("SelectedBook");
             }
         }
-        private void Nav()
-        {
-            NavigateToAddBookPage?.Invoke(); // Вызываем делегат для перехода на страницу
-        }
         private void AddBook()
         {
-            var newBook = new Book()
+            if (SelectedBook == null)
             {
-                Title = Title,
-                Author = Author,
-                Genre = Genre,
-                NumberOfPages = NumberOfPages,
-                YearOfPublication = YearOfPublication
-            };
+                var newBook = new Book()
+                {
+                    Title = Title,
+                    Author = Author,
+                    Genre = Genre,
+                    NumberOfPages = NumberOfPages,
+                    YearOfPublication = YearOfPublication
+                };
 
-            Books.Add(newBook);
+                Books.Add(newBook);
 
-            Title = string.Empty;
-            Author = string.Empty;
-            Genre = string.Empty;
-            NumberOfPages = 0;
-            YearOfPublication = 0;
+                Title = string.Empty;
+                Author = string.Empty;
+                Genre = string.Empty;
+                NumberOfPages = 0;
+                YearOfPublication = 0;
+            }
+            else if(SelectedBook != null)
+            {
+                var newBook = new Book()
+                {
+                    Title = SelectedBook.Title,
+                    Author = SelectedBook.Author,
+                    Genre = SelectedBook.Genre,
+                    NumberOfPages = SelectedBook.NumberOfPages,
+                    YearOfPublication = SelectedBook.YearOfPublication
+                };
+
+                Books.Add(newBook);
+                Books.Remove(SelectedBook);
+                SelectedBook = null;
+            }
+            MyFrame.GoBack();
         }
         private void RemoveBook()
         {
@@ -115,18 +130,6 @@ namespace Library.ViewModel
                 SelectedBook = null;
             }
         }
-        private void UpdateBook()
-        {
-            if (SelectedBook != null)
-            {
-                SelectedBook.Title = Title;
-                SelectedBook.Author = Author;
-                SelectedBook.Genre = Genre;
-                SelectedBook.NumberOfPages = NumberOfPages;
-                SelectedBook.YearOfPublication = YearOfPublication;
-            }
-        }
-
 
         //реализация интерфейса IPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

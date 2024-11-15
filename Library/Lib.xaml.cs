@@ -49,25 +49,16 @@ namespace Library
 
 
             InitializeComponent();
-            var viewModel = new MainViewModel();
-            viewModel.NavigateToMainBookPage = () =>
+            var viewModel = new MainViewModel
             {
-                var mainFrame = new MainFrame();
-                {
-                    DataContext = viewModel;
-                };
-                MyFrame.Navigate(mainFrame);
+                MyFrame = MyFrame // Передача Frame в ViewModel
             };
 
-            viewModel.NavigateToAddBookPage = () =>
-            {
-                var addPage = new AddUpdFrame();
-                {
-                    DataContext = viewModel; // Передаем ViewModel в AddPage
-                };
-                MyFrame.Navigate(addPage);
-            };
             DataContext = viewModel;
+
+            // Устанавливаем начальную страницу
+            MyFrame.Navigate(new MainFrame { DataContext = viewModel });
         }
     }
 }
+

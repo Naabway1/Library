@@ -22,7 +22,7 @@
                 <TextBox Text="{Binding YearOfPublication, Mode=TwoWay}" materialDesign:HintAssist.Hint="Год выпуска" FontSize="50" Margin="10"/>
                 <TextBox Text="{Binding Genre, Mode=TwoWay}" materialDesign:HintAssist.Hint="Жанр" FontSize="50" Margin="10"/>
                 <TextBox Text="{Binding NumberOfPages, Mode=TwoWay}" materialDesign:HintAssist.Hint="Количество страниц" FontSize="50" Margin="10"/>
-                <Button Content="Сохранить" Command="{Binding AddCommand}" materialDesign:ButtonAssist.CornerRadius="25" Height="50" FontSize="20" Margin="350 30"/>
+                <Button Command="{Binding AddCommand}" Content="Сохранить" materialDesign:ButtonAssist.CornerRadius="25" Height="50" FontSize="20" Margin="350 30"/>
             </StackPanel>
         </Border>
     </Grid>

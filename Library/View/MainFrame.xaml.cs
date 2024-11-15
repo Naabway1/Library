@@ -24,6 +24,7 @@ namespace Library.View
         public MainFrame()
         {
             InitializeComponent();
+            
         }
     }
 }
